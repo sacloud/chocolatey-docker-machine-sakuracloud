@@ -44,8 +44,8 @@ deploy_script:
       echo $versionText;
       $zipX32           = 'docker-machine-sakuracloud_windows-386.zip';
       $zipX64           = 'docker-machine-sakuracloud_windows-amd64.zip';
-      $url32            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-sakuracloud_windows-386.zip';
-      $url64            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-sakuracloud_windows-amd64.zip';
+      $url32            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_windows-386.zip';
+      $url64            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_windows-amd64.zip';
       # Download zip files
       Invoke-WebRequest $url32 -OutFile .\x32.zip;
       Invoke-WebRequest $url64 -OutFile .\x64.zip;
