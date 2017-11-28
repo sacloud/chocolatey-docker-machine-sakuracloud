@@ -5,7 +5,7 @@
 # Environment Configuration
 ##############################################
 
-version: {build}
+version: 0.0.0.{build}
 
 environment:
   CHOCO_API_KEY:
@@ -39,7 +39,7 @@ deploy_script:
       $version          = ((Invoke-RestMethod https://api.github.com/repos/sacloud/docker-machine-sakuracloud/releases/latest)[0] -split ";" | Select-String "tag_name=").ToString().Trim().Replace("tag_name=v", "");
       $versionText      = "docker-machine-sakuracloud version ... v" + $version;
       echo $versionText;
-      $appVeyorVersion  = $version + ${env:APPVEYOR_BUILD_VERSION};
+      $appVeyorVersion  = $version + ${env:APPVEYOR_BUILD_VERSION}.Replace("0.0.0", "");
       $versionText      = "package version ... v" + $appVeyorVersion;
       echo $versionText;
       $zipX32           = 'docker-machine-sakuracloud_windows-386.zip';
