@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- == PACKAGE SPECIFIC SECTION == -->
+    <id>docker-machine-sakuracloud</id>
+    <version>__VERSION__</version>
+    <owners>223n (@223n)</owners>
+    <!-- ============================== -->
+
+    <!-- == SOFTWARE SPECIFIC SECTION == -->
+    <title>docker-machine-sakuracloud (Install)</title>
+    <authors>Kazumichi Yamamoto (@yamamoto-febc)</authors>
+    <projectUrl>https://github.com/sacloud/docker-machine-sakuracloud</projectUrl>
+    <!--<projectSourceUrl>https://github.com/sacloud/docker-machine-sakuracloud</projectSourceUrl>-->
+    <!--<iconUrl>https://cdn.rawgit.com/sacloud/images/1fe15a73/usacloud_logo.svg</iconUrl>-->
+    <copyright>Kazumichi Yamamoto (@yamamoto-febc)</copyright>
+    <licenseUrl>https://github.com/sacloud/docker-machine-sakuracloud/blob/master/LICENSE</licenseUrl>
+    <docsUrl>https://github.com/sacloud/docker-machine-sakuracloud/blob/master/README.md</docsUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <packageSourceUrl>https://github.com/sacloud/chocolatey-docker-machine-sakuracloud</packageSourceUrl>
+    <!--<mailingListUrl></mailingListUrl>-->
+    <!--<bugTrackerUrl></bugTrackerUrl>-->
+    <tags>sakuracloud cli docker-machine-driver</tags>
+    <summary>docker-machine-sakuracloud</summary>
+    <description>
+# EN
+  - This is a plugin for Docker Machine allowing to create Docker hosts on SAKURA CLOUD.
+
+----
+
+# JP
+  - Docker Machineでさくらのクラウド上の仮想マシンを利用できるようにするプラグインです。
+
+    </description>
+    <releaseNotes>
+# EN
+  - For details, please check CHANGELOG (Japanese) of GitHub.
+  - https://github.com/sacloud/docker-machine-sakuracloud/releases
+
+----
+
+# JP
+  - 詳しくは、GitHubのCHANGELOG(日本語)をご確認ください。
+  - https://github.com/sacloud/docker-machine-sakuracloud/releases
+    </releaseNotes>
+    <!-- =============================== -->      
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
