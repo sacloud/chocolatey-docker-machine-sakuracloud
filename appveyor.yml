@@ -32,12 +32,11 @@ test_script:
   - ps: |
       $packName = 'docker-machine-driver-sakuracloud';
       choco install $packName -s .\ -f;
-      docker-machine-driver-sakuracloud --version;
 
 artifacts:
-  - path: '.\usacloud\*.nupkg'
-  - path: '.\usacloud\tools\*.ps1'
-  - path: '.\usacloud\*.nuspec'
+  - path: '.\docker-machine-driver-sakuracloud\*.nupkg'
+  - path: '.\docker-machine-driver-sakuracloud\tools\*.ps1'
+  - path: '.\docker-machine-driver-sakuracloud\*.nuspec'
 
 #deploy_script:
 #  - ps: |
