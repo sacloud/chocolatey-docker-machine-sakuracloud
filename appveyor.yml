@@ -3,10 +3,6 @@
 
 version: '{build}'
 
-environment:
-  CHOCO_API_KEY:
-    secure: 53zj0CRv8S/heDM1pmY/NYXDD+mwfYJcZHwpJMrOFgAwoC+ffPNRVjF0xQiA9vKy
-
 install:
   - ps: |
       Get-CimInstance win32_operatingsystem -Property Caption, OSArchitecture, Version | fl Caption, OSArchitecture, Version;
@@ -15,11 +11,6 @@ install:
 
 build_script:
   - ps: |
-      git clone https://github.com/sacloud/chocolatey-docker-machine-sakuracloud
-
-deploy_script:
-  -
-    ps: |
       $version          = ((Invoke-RestMethod https://api.github.com/repos/sacloud/docker-machine-sakuracloud/releases/latest)[0] -split ";" | Select-String "tag_name=").ToString().Trim().Replace("tag_name=v", "");
       $appVeyorVersion  = $version + "." + ${env:APPVEYOR_BUILD_VERSION};
       $versionText      = "docker-machine-sakuracloud version Ver." + $version;
