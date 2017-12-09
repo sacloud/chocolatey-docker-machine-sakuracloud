@@ -2,7 +2,7 @@
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
-  softwareName  = 'docker-machine-driver-sakuracloud*'
+  softwareName  = 'docker-machine-sakuracloud*'
   zipFileName   = 'docker-machine-driver-sakuracloud_windows-386.zip'
   zipFileName64 = 'docker-machine-driver-sakuracloud_windows-amd64.zip'
 }
