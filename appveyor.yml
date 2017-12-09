@@ -1,73 +1,45 @@
 # AppVeyor file
 #   for Docker Machine Driver Sakuracloud
 
-##############################################
-# Environment Configuration
-##############################################
-
-version: 0.0.0.{build}
-
-environment:
-  CHOCO_API_KEY:
-    secure: 53zj0CRv8S/heDM1pmY/NYXDD+mwfYJcZHwpJMrOFgAwoC+ffPNRVjF0xQiA9vKy
+version: '{build}'
 
 install:
-  # Install Git
-  - git clone https://github.com/sacloud/chocolatey-docker-machine-sakuracloud
+  - ps: |
+      Get-CimInstance win32_operatingsystem -Property Caption, OSArchitecture, Version | fl Caption, OSArchitecture, Version;
+      $PSVersionTable;
+      git --version;
 
-##############################################
-# Build Configuration
-##############################################
-
-build: off
-
-##############################################
-# Test Configuration
-##############################################
-
-test: off
-
-##############################################
-# Deployment Configuration
-##############################################
-
-deploy_script:
-  -
-    ps: |
-      # Set values
-      echo "Start deploy script ..";
+build_script:
+  - ps: |
       $version          = ((Invoke-RestMethod https://api.github.com/repos/sacloud/docker-machine-sakuracloud/releases/latest)[0] -split ";" | Select-String "tag_name=").ToString().Trim().Replace("tag_name=v", "");
-      $versionText      = "docker-machine-sakuracloud version ... v" + $version;
+      $appVeyorVersion  = $version + "." + ${env:APPVEYOR_BUILD_VERSION};
+      $versionText      = "docker-machine-sakuracloud version Ver." + $version;
       echo $versionText;
-      $appVeyorVersion  = $version + ${env:APPVEYOR_BUILD_VERSION}.Replace("0.0.0", "");
-      $versionText      = "package version ... v" + $appVeyorVersion;
+      $versionText      = "package version Ver." + $appVeyorVersion;
       echo $versionText;
-      $zipX32           = 'docker-machine-sakuracloud_windows-386.zip';
-      $zipX64           = 'docker-machine-sakuracloud_windows-amd64.zip';
       $url32            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_windows-386.zip';
       $url64            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_windows-amd64.zip';
-      # Download zip files
       Invoke-WebRequest $url32 -OutFile .\x32.zip;
       Invoke-WebRequest $url64 -OutFile .\x64.zip;
-      # Get hash values
       $hash32           = (Get-FileHash .\x32.zip -Algorithm SHA512).Hash;
       $hash64           = (Get-FileHash .\x64.zip -Algorithm SHA512).Hash;
-      # Replace vlaues
       Set-Location -Path .\docker-machine-sakuracloud;
-      (Get-Content '.\docker-machine-sakuracloud.nuspec' -Raw).Replace("<version>__VERSION__</version>", "<version>$($appVeyorVersion)</version>") | Out-File '.\docker-machine-sakuracloud.nuspec';
+      (Get-Content '.\docker-machine-sakuracloud.nuspec' -Raw).Replace("__VERSION__", "$($appVeyorVersion)") | Out-File '.\docker-machine-sakuracloud.nuspec';
       (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__VERSION__", "v$($version)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1';
-      # Create chocolatey package
       choco pack;
-      # Check Install
+
+test_script:
+  - ps: |
       $packName = 'docker-machine-sakuracloud';
       choco install $packName -s .\ -f;
-      # Push nupkg file
-      $nupkgName        = (Get-ChildItem * -Include *.nupkg).Name;
-      Push-AppveyorArtifact $nupkgName;
-      # Push nuspec file
-      Push-AppveyorArtifact '.\docker-machine-sakuracloud.nuspec'
-      # Push chocolateyinstall file
-      Push-AppveyorArtifact '.\tools\chocolateyinstall.ps1'
-      # Add Chocolatey ApiKey
-      #choco apikey --key ${env:CHOCO_API_KEY} --source https://push.chocolatey.org/
-      #choco push $nupkgName --source https://push.chocolatey.org/
+
+artifacts:
+  - path: '.\docker-machine-sakuracloud\*.nupkg'
+  - path: '.\docker-machine-sakuracloud\tools\*.ps1'
+  - path: '.\docker-machine-sakuracloud\*.nuspec'
+
+#deploy_script:
+#  - ps: |
+#      $packName = 'docker-machine-sakuracloud';
+#      choco apikey --key ${env:CHOCO_API_KEY} --source https://push.chocolatey.org/
+#      choco push $nupkgName --source https://push.chocolatey.org/
