@@ -32,6 +32,7 @@ test_script:
   - ps: |
       $packName = 'docker-machine-sakuracloud';
       choco install $packName -s .\ -f;
+      cuninst $packName;
 
 artifacts:
   - path: '.\docker-machine-sakuracloud\*.nupkg'
