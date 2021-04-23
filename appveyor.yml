@@ -31,6 +31,7 @@ build_script:
       Set-Location -Path .\docker-machine-sakuracloud;
       (Get-Content '.\docker-machine-sakuracloud.nuspec' -Raw).Replace("__VERSION__", "$($appVeyorVersion)") | Out-File '.\docker-machine-sakuracloud.nuspec';
       (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__VERSION__", "$($version)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1';
+      (Get-Content '.\tools\chocolateyuninstall.ps1' -Raw).Replace("__VERSION__", "$($version)") | Out-File '.\tools\chocolateyuninstall.ps1';
       choco pack;
 
 test_script:
