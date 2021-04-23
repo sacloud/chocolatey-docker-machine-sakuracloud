@@ -20,8 +20,8 @@ build_script:
       echo $versionText;
       $versionText      = "package version Ver." + $appVeyorVersion;
       echo $versionText;
-      $url32            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_' + $version + '_windows-386.zip';
-      $url64            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_' + $version + '_windows-amd64.zip';
+      $url32            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_' + $version + '_windows_386.zip';
+      $url64            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_' + $version + '_windows_amd64.zip';
       echo $url32;
       echo $url64;
       Invoke-WebRequest $url32 -OutFile .\x32.zip;
