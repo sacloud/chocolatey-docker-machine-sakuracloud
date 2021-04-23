@@ -20,15 +20,18 @@ build_script:
       echo $versionText;
       $versionText      = "package version Ver." + $appVeyorVersion;
       echo $versionText;
-      $url32            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_windows-386.zip';
-      $url64            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_windows-amd64.zip';
+      $url32            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_' + $version + '_windows_386.zip';
+      $url64            = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v' + $version + '/docker-machine-driver-sakuracloud_' + $version + '_windows_amd64.zip';
+      echo $url32;
+      echo $url64;
       Invoke-WebRequest $url32 -OutFile .\x32.zip;
       Invoke-WebRequest $url64 -OutFile .\x64.zip;
       $hash32           = (Get-FileHash .\x32.zip -Algorithm SHA512).Hash;
       $hash64           = (Get-FileHash .\x64.zip -Algorithm SHA512).Hash;
       Set-Location -Path .\docker-machine-sakuracloud;
       (Get-Content '.\docker-machine-sakuracloud.nuspec' -Raw).Replace("__VERSION__", "$($appVeyorVersion)") | Out-File '.\docker-machine-sakuracloud.nuspec';
-      (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__VERSION__", "v$($version)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1';
+      (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__VERSION__", "$($version)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1';
+      (Get-Content '.\tools\chocolateyuninstall.ps1' -Raw).Replace("__VERSION__", "$($version)") | Out-File '.\tools\chocolateyuninstall.ps1';
       choco pack;
 
 test_script:
