@@ -10,15 +10,15 @@ $hash32       = '__HASH32__';
 $hash64       = '__HASH64__';
 
 $packageArgs = @{
-  packageName   = $packageName
-  unzipLocation = $toolsDir
-  url           = $url32
-  url64bit      = $url64
-  softwareName  = $softwareName
-  checksum      = $hash32
-  checksumType  = $hashType
-  checksum64    = $hash64
-  checksumType64= $hashType
+  packageName    = $packageName
+  unzipLocation  = $toolsDir
+  url            = $url32
+  url64bit       = $url64
+  softwareName   = $softwareName
+  checksum       = $hash32
+  checksumType   = $hashType
+  checksum64     = $hash64
+  checksumType64 = $hashType
 }
 
 # https://chocolatey.org/docs/helpers-install-chocolatey-zip-package
