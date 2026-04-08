@@ -3,7 +3,7 @@
 $packageName  = $env:ChocolateyPackageName;
 $toolsDir     = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)";
 $softwareName = 'docker-machine-sakuracloud*';
-$url32        = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v___VERSION___/docker-machine-driver-sakuracloud___VERSION___windows_386.zip';
+$url32        = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v__VERSION__/docker-machine-driver-sakuracloud___VERSION___windows_386.zip';
 $url64        = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v__VERSION__/docker-machine-driver-sakuracloud___VERSION___windows_amd64.zip';
 $hashType     = 'sha512';
 $hash32       = '__HASH32__';
