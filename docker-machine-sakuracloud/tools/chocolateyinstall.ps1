@@ -21,5 +21,5 @@ $packageArgs = @{
   checksumType64 = $hashType
 }
 
-# https://chocolatey.org/docs/helpers-install-chocolatey-zip-package
+# https://docs.chocolatey.org/en-us/create/functions/install-chocolateyzippackage
 Install-ChocolateyZipPackage @packageArgs
