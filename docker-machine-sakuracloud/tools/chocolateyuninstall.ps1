@@ -1,16 +1,6 @@
 ﻿$ErrorActionPreference = 'Stop';
 
-$packageArgs = @{
-  packageName   = $env:ChocolateyPackageName
-  softwareName  = 'docker-machine-sakuracloud*'
-  zipFileName   = 'docker-machine-driver-sakuracloud___VERSION___windows_386.zip'
-  zipFileName64 = 'docker-machine-driver-sakuracloud___VERSION___windows_amd64.zip'
-}
+$packageName = $env:ChocolateyPackageName;
 
-# Only necessary if you did not unpack to package directory - see https://chocolatey.org/docs/helpers-uninstall-chocolatey-zip-package
-$os = Get-WmiObject -Class Win32_OperatingSystem;
-if ($os.OSarchitecture.Contains("64")) {
-  Uninstall-ChocolateyZipPackage -PackageName $packageArgs['packageName'] -ZipFileName $packageArgs['zipFileName64']
-} else {
-  Uninstall-ChocolateyZipPackage -PackageName $packageArgs['packageName'] -ZipFileName $packageArgs['zipFileName']
-}
+Uninstall-ChocolateyZipPackage -PackageName $packageName -ZipFileName 'docker-machine-driver-sakuracloud___VERSION___windows_386.zip'
+Uninstall-ChocolateyZipPackage -PackageName $packageName -ZipFileName 'docker-machine-driver-sakuracloud___VERSION___windows_amd64.zip'
