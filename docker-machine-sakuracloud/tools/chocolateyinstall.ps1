@@ -1,13 +1,13 @@
 ﻿$ErrorActionPreference = 'Stop';
 
-$packageName  = $env:ChocolateyPackageName;
-$toolsDir     = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)";
-$softwareName = 'docker-machine-sakuracloud*';
-$url32        = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v__VERSION__/docker-machine-driver-sakuracloud___VERSION___windows_386.zip';
-$url64        = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v__VERSION__/docker-machine-driver-sakuracloud___VERSION___windows_amd64.zip';
-$hashType     = 'sha512';
-$hash32       = '__HASH32__';
-$hash64       = '__HASH64__';
+$packageName = $env:ChocolateyPackageName;
+$toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)";
+$softwareName = 'docker-machine-driver-sakuracloud*';
+$url32 = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v__VERSION__/docker-machine-driver-sakuracloud___VERSION___windows_386.zip';
+$url64 = 'https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v__VERSION__/docker-machine-driver-sakuracloud___VERSION___windows_amd64.zip';
+$hashType = 'sha512';
+$hash32 = '__HASH32__';
+$hash64 = '__HASH64__';
 
 $packageArgs = @{
   packageName    = $packageName
