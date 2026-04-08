@@ -1,5 +1,92 @@
 # chocolatey-docker-machine-sakuracloud
 
-Chocolatey package for docker-machine-sakuracloud
+[docker-machine-sakuracloud](https://github.com/sacloud/docker-machine-sakuracloud)（さくらのクラウド用Docker Machineドライバー）の[Chocolatey](https://community.chocolatey.org/packages/docker-machine-sakuracloud)パッケージです。
 
-[![Build status](https://ci.appveyor.com/api/projects/status/mk8s5ygbeemogr6u/branch/master?svg=true)](https://ci.appveyor.com/project/223n/chocolatey-docker-machine-sakuracloud/branch/master)
+[![Chocolatey Package](https://github.com/sacloud/chocolatey-docker-machine-sakuracloud/actions/workflows/chocolatey.yml/badge.svg)](https://github.com/sacloud/chocolatey-docker-machine-sakuracloud/actions/workflows/chocolatey.yml)
+
+## インストール
+
+```powershell
+choco install docker-machine-sakuracloud
+```
+
+### アップデート
+
+```powershell
+choco upgrade docker-machine-sakuracloud
+```
+
+### アンインストール
+
+```powershell
+choco uninstall docker-machine-sakuracloud
+```
+
+## CI/CD
+
+GitHub Actionsによる自動ビルド・配信を行っています。
+
+### 処理の流れ
+
+1. GitHub APIから[sacloud/docker-machine-sakuracloud](https://github.com/sacloud/docker-machine-sakuracloud)の最新リリースバージョンを取得
+2. Chocolatey上の登録済みバージョン（審査中を含む）と比較し、同一であればスキップ
+3. Windows 32bit/64bitのzipをダウンロードしSHA512ハッシュを算出
+4. テンプレートファイルのプレースホルダーを実際の値に置換
+5. `choco pack`で`.nupkg`を生成
+6. ローカルインストールテスト（`choco install` → `choco uninstall`）
+7. テスト成功後、Chocolateyへ自動push
+
+### 定時ビルド
+
+GitHub Actionsのスケジュール実行により、毎日UTC 0:00（JST 9:00）にdocker-machine-sakuracloudの新バージョンを確認しています。
+
+新バージョンが検出された場合のみビルド・配信が実行されます。
+
+## ローカルビルド
+
+手動でパッケージをビルド・テストする場合の手順です。
+
+```powershell
+# 最新バージョンの取得
+$release = Invoke-RestMethod -Uri "https://api.github.com/repos/sacloud/docker-machine-sakuracloud/releases/latest"
+$version = $release.tag_name -replace "^v", ""
+
+# zipのダウンロードとハッシュ算出
+$url32 = "https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v${version}/docker-machine-driver-sakuracloud_${version}_windows_386.zip"
+$url64 = "https://github.com/sacloud/docker-machine-sakuracloud/releases/download/v${version}/docker-machine-driver-sakuracloud_${version}_windows_amd64.zip"
+Invoke-WebRequest $url32 -OutFile .\x32.zip
+Invoke-WebRequest $url64 -OutFile .\x64.zip
+$hash32 = (Get-FileHash .\x32.zip -Algorithm SHA512).Hash
+$hash64 = (Get-FileHash .\x64.zip -Algorithm SHA512).Hash
+
+# プレースホルダーの置換
+cd docker-machine-sakuracloud
+(Get-Content '.\docker-machine-sakuracloud.nuspec' -Raw).Replace("__VERSION__", $version) | Out-File '.\docker-machine-sakuracloud.nuspec' -Encoding utf8
+(Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__VERSION__", $version).Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1' -Encoding utf8
+(Get-Content '.\tools\chocolateyuninstall.ps1' -Raw).Replace("__VERSION__", $version) | Out-File '.\tools\chocolateyuninstall.ps1' -Encoding utf8
+
+# パッケージ作成とテスト
+choco pack
+choco install docker-machine-sakuracloud -s .\ -f
+choco uninstall docker-machine-sakuracloud
+```
+
+> **注意**: テンプレートファイルのプレースホルダー（`__VERSION__`, `__HASH32__`, `__HASH64__`）を直接書き換えてコミットしないでください。これらはCI時に動的に置換されます。
+
+## リポジトリ構成
+
+| ファイル                                                         | 説明                       |
+|------------------------------------------------------------------|----------------------------|
+| `docker-machine-sakuracloud/docker-machine-sakuracloud.nuspec`   | Chocolateyパッケージ定義   |
+| `docker-machine-sakuracloud/tools/chocolateyinstall.ps1`         | インストールスクリプト     |
+| `docker-machine-sakuracloud/tools/chocolateyuninstall.ps1`       | アンインストールスクリプト |
+| `.github/workflows/chocolatey.yml`                               | GitHub Actions CI/CD設定   |
+
+## 関連リンク
+
+- [docker-machine-sakuracloud](https://github.com/sacloud/docker-machine-sakuracloud) - さくらのクラウド用Docker Machineドライバー本体
+- [Chocolateyパッケージページ](https://community.chocolatey.org/packages/docker-machine-sakuracloud)
+
+## ライセンス
+
+[MIT License](LICENSE)
